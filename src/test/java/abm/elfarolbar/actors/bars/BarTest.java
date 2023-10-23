@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class BarTests {
+public class BarTest {
     @Test
     public void defaultBuilder_createsBar_withDefaultValues() {
         final Bar bar = Bar.builder().build();
