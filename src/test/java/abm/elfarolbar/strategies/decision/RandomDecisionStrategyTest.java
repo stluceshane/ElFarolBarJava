@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.mockito.Mockito.doReturn;
 
 import abm.elfarolbar.actors.bars.Bar;
+import abm.elfarolbar.agents.patron.PatronMemoryProps;
 import abm.elfarolbar.strategies.decision.RandomDecisionStrategy;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ public class RandomDecisionStrategyTest {
     @Mock
     private Bar bar;
 
+    private final PatronMemoryProps memoryProps = PatronMemoryProps.builder().build();
+
     @Test
     public void decide_returnsTrueOrFalse_whenNoHistory() {
         final RandomDecisionStrategy strategy = RandomDecisionStrategy.builder().build();
@@ -35,7 +38,7 @@ public class RandomDecisionStrategyTest {
 
         final Map<Boolean, List<Integer>> mapResults = IntStream.range(0, 1000)
             .boxed()
-            .collect(Collectors.groupingBy(idx -> strategy.decide(bar)));
+            .collect(Collectors.groupingBy(idx -> strategy.decide(bar, memoryProps)));
 
         assertThat("Can return true with correct proportions", Double.valueOf(mapResults.get(Boolean.TRUE).size()), closeTo(600.0, 100.0));
         assertThat("Can return false with correct proportions", Double.valueOf(mapResults.get(Boolean.FALSE).size()), closeTo(400.0, 100.0));

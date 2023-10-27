@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 
 import abm.elfarolbar.actors.bars.Bar;
+import abm.elfarolbar.agents.patron.PatronMemoryProps;
 import abm.elfarolbar.strategies.decision.NeverDecisionStrategy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,11 +18,13 @@ public class NeverDecisionStrategyTest {
     @Mock
     private Bar bar;
 
+    private final PatronMemoryProps memoryProps = PatronMemoryProps.builder().build();
+
     @Test
     public void decide_returnsFalse() {
         final NeverDecisionStrategy strategy = NeverDecisionStrategy.builder().build();
 
-        assertThat("Returns false, regardless of bar", strategy.decide(bar), is(false));
+        assertThat("Returns false, regardless of bar", !strategy.decide(bar, memoryProps));
     }
 
     @Test

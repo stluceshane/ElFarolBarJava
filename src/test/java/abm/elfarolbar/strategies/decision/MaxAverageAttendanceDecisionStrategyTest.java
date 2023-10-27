@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.mockito.Mockito.doReturn;
 
 import abm.elfarolbar.actors.bars.Bar;
+import abm.elfarolbar.agents.patron.PatronMemoryProps;
 import abm.elfarolbar.strategies.decision.MaxAverageAttendanceDecisionStrategy;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,8 @@ public class MaxAverageAttendanceDecisionStrategyTest {
     @Mock
     private Bar bar;
 
+    private final PatronMemoryProps memoryProps = PatronMemoryProps.builder().build();
+
     @Test
     public void decide_returnsTrueOrFalse_whenNoHistory() {
         final MaxAverageAttendanceDecisionStrategy strategy = MaxAverageAttendanceDecisionStrategy.builder().build();
@@ -33,7 +36,7 @@ public class MaxAverageAttendanceDecisionStrategyTest {
 
         final Map<Boolean, List<Integer>> mapResults = IntStream.range(0, 1000)
             .boxed()
-            .collect(Collectors.groupingBy(idx -> strategy.decide(bar)));
+            .collect(Collectors.groupingBy(idx -> strategy.decide(bar, memoryProps)));
 
         assertThat("Can return true with correct proportions", Double.valueOf(mapResults.get(Boolean.TRUE).size()), closeTo(800.0, 75.0));
         assertThat("Can return false with correct proportions", Double.valueOf(mapResults.get(Boolean.FALSE).size()), closeTo(200.0, 75.0));
@@ -54,7 +57,7 @@ public class MaxAverageAttendanceDecisionStrategyTest {
             .when(bar)
             .getAttendanceHistory();
 
-        assertThat("Strategy returns false", strategy.decide(bar), is(false));
+        assertThat("Strategy returns false", !strategy.decide(bar, memoryProps));
     }
 
     @Test
@@ -72,7 +75,7 @@ public class MaxAverageAttendanceDecisionStrategyTest {
             .when(bar)
             .getAttendanceHistory();
 
-        assertThat("Strategy returns true", strategy.decide(bar), is(true));
+        assertThat("Strategy returns true", strategy.decide(bar, memoryProps));
     }
 
     @Test
@@ -90,7 +93,7 @@ public class MaxAverageAttendanceDecisionStrategyTest {
             .when(bar)
             .getAttendanceHistory();
 
-        assertThat("Strategy returns true", strategy.decide(bar), is(true));
+        assertThat("Strategy returns true", strategy.decide(bar, memoryProps));
     }
 
     @Test

@@ -5,6 +5,8 @@ import java.util.Map;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
+import lombok.Setter;
+import lombok.Value;
 
 @Builder(toBuilder = true)
 @Data
@@ -16,6 +18,6 @@ public class PatronHistoryEvent {
     private final Boolean decision;
     @NonNull
     private final String strategy;
-    private final Boolean crowded;
-    private final Boolean correct;
+    private Boolean crowded;
+    private Boolean correct;
 }

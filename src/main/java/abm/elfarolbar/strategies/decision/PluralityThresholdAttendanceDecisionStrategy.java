@@ -3,8 +3,10 @@ package abm.elfarolbar.strategies.decision;
 import abm.elfarolbar.actors.bars.Bar;
 import java.util.List;
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder(toBuilder = true)
+@Getter
 public class PluralityThresholdAttendanceDecisionStrategy extends AttendanceDecisionStrategy {
     @Builder.Default
     private int threshold = 30;
@@ -18,7 +20,7 @@ public class PluralityThresholdAttendanceDecisionStrategy extends AttendanceDeci
         final long countAboveThreshold = recentAttendanceHistory.stream()
                 .filter(value -> value >= threshold)
                 .count();
-        return countBelowThreshold <= countAboveThreshold;
+        return (countBelowThreshold <= countAboveThreshold) != reversed;
     }
 
     @Override

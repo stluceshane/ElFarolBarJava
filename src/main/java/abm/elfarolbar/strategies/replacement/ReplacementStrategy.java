@@ -2,6 +2,7 @@ package abm.elfarolbar.strategies.replacement;
 
 import abm.elfarolbar.agents.patron.PatronHistoryEvent;
 import abm.elfarolbar.agents.patron.PatronMemoryProps;
+import com.google.common.collect.Iterables;
 import java.util.List;
 
 public abstract class ReplacementStrategy {
@@ -9,7 +10,7 @@ public abstract class ReplacementStrategy {
 
     public boolean decide(final PatronMemoryProps props, final List<PatronHistoryEvent> history) {
         return !history.isEmpty()
-            && !history.getLast().getCorrect()
+            && !Iterables.getLast(history).getCorrect()
             && this.minRequirement(history)
             && this.decidePostCheck(props, history);
     }

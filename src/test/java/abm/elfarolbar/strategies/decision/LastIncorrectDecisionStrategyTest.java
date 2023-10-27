@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.mockito.Mockito.doReturn;
 
 import abm.elfarolbar.actors.bars.Bar;
+import abm.elfarolbar.agents.patron.PatronMemoryProps;
 import abm.elfarolbar.strategies.decision.LastIncorrectDecisionStrategy;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
@@ -23,6 +24,8 @@ public class LastIncorrectDecisionStrategyTest {
     @Mock
     private Bar bar;
 
+    private final PatronMemoryProps memoryProps = PatronMemoryProps.builder().build();
+
     @Test
     public void decide_returnsFalse_whenLastDecisionIsNotCrowded() {
         final LastIncorrectDecisionStrategy strategy = LastIncorrectDecisionStrategy.builder().build();
@@ -30,7 +33,7 @@ public class LastIncorrectDecisionStrategyTest {
             .when(bar)
             .crowdedHistory();
 
-        assertThat("Returns false, if last bar attendance was not crowded", strategy.decide(bar), is(false));
+        assertThat("Returns false, if last bar attendance was not crowded", !strategy.decide(bar, memoryProps));
     }
 
     @Test
@@ -40,7 +43,7 @@ public class LastIncorrectDecisionStrategyTest {
             .when(bar)
             .crowdedHistory();
 
-        assertThat("Returns false, if last bar attendance was not crowded", strategy.decide(bar), is(false));
+        assertThat("Returns false, if last bar attendance was not crowded", !strategy.decide(bar, memoryProps));
     }
 
     @Test
@@ -50,7 +53,7 @@ public class LastIncorrectDecisionStrategyTest {
             .when(bar)
             .crowdedHistory();
 
-        assertThat("Returns true, if last bar attendance was crowded", strategy.decide(bar), is(true));
+        assertThat("Returns true, if last bar attendance was crowded", strategy.decide(bar, memoryProps));
     }
 
     @Test
@@ -60,7 +63,7 @@ public class LastIncorrectDecisionStrategyTest {
             .when(bar)
             .crowdedHistory();
 
-        assertThat("Returns true, if last bar attendance was crowded", strategy.decide(bar), is(true));
+        assertThat("Returns true, if last bar attendance was crowded", strategy.decide(bar, memoryProps));
     }
 
     @Test
@@ -72,7 +75,7 @@ public class LastIncorrectDecisionStrategyTest {
 
         final Map<Boolean, List<Integer>> mapResults = IntStream.range(0, 50)
             .boxed()
-            .collect(Collectors.groupingBy(idx -> strategy.decide(bar)));
+            .collect(Collectors.groupingBy(idx -> strategy.decide(bar, memoryProps)));
 
         assertThat("Can return true if bar has no history", not(mapResults.get(Boolean.TRUE).isEmpty()));
         assertThat("Can return false if bar has no history", not(mapResults.get(Boolean.FALSE).isEmpty()));
