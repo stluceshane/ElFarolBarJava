@@ -51,7 +51,7 @@ public class MinAttendanceDecisionStrategyTest {
 
         doReturn(
             IntStream.range(0, RandomUtils.nextInt(1, 20))
-                .map(idx -> RandomUtils.nextInt(localMin, 101))
+                .map(idx -> RandomUtils.nextInt(localMin + 1, 101))
                 .boxed()
                 .toList())
             .when(bar)
@@ -87,7 +87,7 @@ public class MinAttendanceDecisionStrategyTest {
 
         doReturn(
             IntStream.range(0, RandomUtils.nextInt(1, 20))
-                .map(idx -> RandomUtils.nextInt(0, localMin + 1))
+                .map(idx -> RandomUtils.nextInt(0, localMin))
                 .boxed()
                 .toList())
             .when(bar)

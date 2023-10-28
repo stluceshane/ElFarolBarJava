@@ -51,7 +51,7 @@ public class MaxAttendanceDecisionStrategyTest {
 
         doReturn(
             IntStream.range(0, RandomUtils.nextInt(1, 20))
-                .map(idx -> RandomUtils.nextInt(localMax, 101))
+                .map(idx -> RandomUtils.nextInt(localMax + 1, 101))
                 .boxed()
                 .toList())
             .when(bar)
@@ -87,7 +87,7 @@ public class MaxAttendanceDecisionStrategyTest {
 
         doReturn(
             IntStream.range(0, RandomUtils.nextInt(1, 20))
-                .map(idx -> RandomUtils.nextInt(0, localMax + 1))
+                .map(idx -> RandomUtils.nextInt(0, localMax))
                 .boxed()
                 .toList())
             .when(bar)
