@@ -187,7 +187,7 @@ public class FlatToleranceReplacementStrategyTest {
     private static PatronHistoryEvent createAgentHistoryEvent(final boolean correct) {
         return PatronHistoryEvent.builder()
             .strategy("test-strategy")
-            .decisions(ImmutableMap.of())
+            .strategyNameToDecisionMap(ImmutableMap.of())
             .decision(Boolean.FALSE)
             .correct(correct)
             .build();

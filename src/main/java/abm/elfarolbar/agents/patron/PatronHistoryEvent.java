@@ -5,19 +5,17 @@ import java.util.Map;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import lombok.Setter;
-import lombok.Value;
 
 @Builder(toBuilder = true)
 @Data
 public class PatronHistoryEvent {
     @NonNull
     @Builder.Default
-    private final Map<String, Boolean> decisions = ImmutableMap.of();
+    private final Map<String, Boolean> strategyNameToDecisionMap = ImmutableMap.of();
     @NonNull
     private final Boolean decision;
     @NonNull
     private final String strategy;
-    private Boolean crowded;
+    private Boolean overcrowded;
     private Boolean correct;
 }
