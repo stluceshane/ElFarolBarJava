@@ -24,4 +24,6 @@ public abstract class ReplacementStrategy {
                 .filter(historyEvent -> !historyEvent.getCorrect())
                 .toList();
     }
+
+    public abstract String getName();
 }

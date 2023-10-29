@@ -13,4 +13,9 @@ public class FlatToleranceReplacementStrategy extends ReplacementStrategy {
     protected boolean decidePostCheck(final PatronMemoryProps props, final List<PatronHistoryEvent> historyEvent) {
         return RandomUtils.nextDouble(0.0, 1.0) < props.getFailureTolerance();
     }
+
+    @Override
+    public String getName() {
+        return "FlatTolerance";
+    }
 }

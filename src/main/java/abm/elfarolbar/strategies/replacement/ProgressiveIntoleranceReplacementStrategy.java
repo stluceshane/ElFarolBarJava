@@ -13,4 +13,9 @@ public class ProgressiveIntoleranceReplacementStrategy extends ReplacementStrate
     public boolean decidePostCheck(final PatronMemoryProps props, final List<PatronHistoryEvent> historyEvent) {
         return RandomUtils.nextDouble(0.0, 1.0) < (props.getFailureTolerance() * this.getFailedEvents(historyEvent).size());
     }
+
+    @Override
+    public String getName() {
+        return "ProgressiveIntolerance";
+    }
 }

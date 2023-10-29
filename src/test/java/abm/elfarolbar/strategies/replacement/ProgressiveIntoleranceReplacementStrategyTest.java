@@ -1,20 +1,21 @@
 package abm.elfarolbar.strategies.replacement;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.is;
-
 import abm.elfarolbar.agents.patron.PatronHistoryEvent;
 import abm.elfarolbar.agents.patron.PatronMemoryProps;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.is;
 
 @ExtendWith(MockitoExtension.class)
 public class ProgressiveIntoleranceReplacementStrategyTest {
@@ -201,6 +202,13 @@ public class ProgressiveIntoleranceReplacementStrategyTest {
 
         assertThat("Returns true decision when half of recent decisions are incorrect", Double.valueOf(mapResults.get(Boolean.TRUE).size()), closeTo(500.0, 75.0));
         assertThat("Returns false decision when half of recent decisions are incorrect", Double.valueOf(mapResults.get(Boolean.FALSE).size()), closeTo(500.0, 75.0));
+    }
+
+    @Test
+    public void getName_returnsCorrectName() {
+        final ProgressiveIntoleranceReplacementStrategy strategy = ProgressiveIntoleranceReplacementStrategy.builder().build();
+
+        assertThat("Returns correct name", strategy.getName(), is("ProgressiveIntolerance"));
     }
 
     private static PatronHistoryEvent createAgentHistoryEvent(final boolean correct) {
