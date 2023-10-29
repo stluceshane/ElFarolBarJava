@@ -3,10 +3,12 @@ package abm.elfarolbar.strategies.decision;
 import abm.elfarolbar.actors.bars.Bar;
 import java.util.List;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder(toBuilder = true)
 @Getter
+@EqualsAndHashCode(callSuper = true)
 public class PluralityThresholdAttendanceDecisionStrategy extends AttendanceDecisionStrategy {
     @Builder.Default
     private int threshold = 30;

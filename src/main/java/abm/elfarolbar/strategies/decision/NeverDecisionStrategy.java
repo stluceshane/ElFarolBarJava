@@ -3,8 +3,10 @@ package abm.elfarolbar.strategies.decision;
 import abm.elfarolbar.actors.bars.Bar;
 import abm.elfarolbar.agents.patron.PatronMemoryProps;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 
 @Builder(toBuilder = true)
+@EqualsAndHashCode(callSuper = true)
 public class NeverDecisionStrategy extends DecisionStrategy {
     @Override
     public boolean decide(final Bar bar, final PatronMemoryProps memoryProps) {

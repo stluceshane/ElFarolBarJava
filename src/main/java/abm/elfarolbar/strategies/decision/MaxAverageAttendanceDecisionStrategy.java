@@ -3,9 +3,11 @@ package abm.elfarolbar.strategies.decision;
 import abm.elfarolbar.actors.bars.Bar;
 import java.util.List;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.RandomUtils;
 
 @Builder(toBuilder = true)
+@EqualsAndHashCode(callSuper = true)
 public class MaxAverageAttendanceDecisionStrategy extends AttendanceDecisionStrategy {
     @Builder.Default
     private int maxAverage = 80;
