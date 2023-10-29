@@ -9,7 +9,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,18 +30,19 @@ public class SimulationGenerator {
     List<Integer> barPreviousHistory = ImmutableList.of(0);
     @Builder.Default
     List<PatronSetupDetails> patronSetupDetailsList = ImmutableList.of();
+    @NonNull
+    Set<DecisionStrategy> decisionStrategies;
+    @NonNull
+    Set<ReplacementStrategy> replacementStrategies;
 
-    public Simulation generate(@NonNull final String simulationId) {
-        final Set<ReplacementStrategy> replacementStrategies = new HashSet<>(this.getPatronSetupDetailsList().stream()
-            .map(PatronSetupDetails::getReplacementStrategy)
-            .collect(Collectors.toMap(strategy -> strategy.getClass().getName(), strategy -> strategy, (first, second) -> first))
-            .values());
-
-        final Map<String, DecisionStrategy> decisionStrategiesByNameMap = this.getPatronSetupDetailsList().stream()
-            .map(PatronSetupDetails::getDecisionStrategy)
+    public Simulation generate(final String simulationId) {
+        final Map<String, DecisionStrategy> decisionStrategiesMap = this.getDecisionStrategies()
+                .stream()
                 .collect(Collectors.toMap(DecisionStrategy::getName, strategy -> strategy, (first, second) -> first));
 
-        final Set<DecisionStrategy> decisionStrategies = ImmutableSet.copyOf(decisionStrategiesByNameMap.values());
+        final Map<String, ReplacementStrategy> replacementStrategiesMap = this.getReplacementStrategies()
+                .stream()
+                .collect(Collectors.toMap(ReplacementStrategy::getName, strategy -> strategy, (first, second) -> first));
 
         final List<Patron> patrons = this.getPatronSetupDetailsList().parallelStream()
                 .map(patronSetupDetails -> IntStream.range(0, patronSetupDetails.getCount())
@@ -51,9 +51,9 @@ public class SimulationGenerator {
                 .flatMap(Collection::parallelStream)
                 .map(patronSetupDetails -> Patron.builder()
                         .id(UUID.randomUUID().toString())
-                        .decisionStrategies(Map.copyOf(decisionStrategiesByNameMap))
-                        .decisionStrategyName(patronSetupDetails.getDecisionStrategy().getName())
-                        .replacementStrategy(patronSetupDetails.getReplacementStrategy())
+                        .decisionStrategies(Map.copyOf(decisionStrategiesMap))
+                        .decisionStrategyName(patronSetupDetails.getDecisionStrategyName())
+                        .replacementStrategy(replacementStrategiesMap.get(patronSetupDetails.getReplacementStrategyName()))
                         .memoryProps(
                                 PatronMemoryProps.builder()
                                         .failureTolerance(0.1f)
@@ -76,8 +76,8 @@ public class SimulationGenerator {
             .initialPatronSetupDetails(patronSetupDetailsList)
             .bar(bar)
             .patrons(patrons)
-            .decisionStrategies(decisionStrategies)
-            .replacementStrategies(replacementStrategies)
+            .decisionStrategies(ImmutableSet.copyOf(decisionStrategiesMap.values()))
+            .replacementStrategies(ImmutableSet.copyOf(replacementStrategiesMap.values()))
             .strategyDistributions(Lists.newArrayList())
             .build();
     }

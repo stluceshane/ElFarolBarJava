@@ -10,8 +10,8 @@ import abm.elfarolbar.strategies.replacement.ReplacementStrategy;
 @Value
 public class PatronSetupDetails {
     @NonNull
-    DecisionStrategy decisionStrategy;
+    String decisionStrategyName;
     @NonNull
-    ReplacementStrategy replacementStrategy;
+    String replacementStrategyName;
     int count;
 }

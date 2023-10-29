@@ -20,11 +20,13 @@ import abm.elfarolbar.strategies.decision.LastCorrectDecisionStrategy;
 import abm.elfarolbar.strategies.decision.NeverDecisionStrategy;
 import abm.elfarolbar.strategies.replacement.FlatToleranceReplacementStrategy;
 import abm.elfarolbar.strategies.replacement.ProgressiveIntoleranceReplacementStrategy;
+import abm.elfarolbar.strategies.replacement.ReplacementStrategy;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,55 +34,78 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class SimulationGeneratorTest {
+    public final FlatToleranceReplacementStrategy flatToleranceReplacementStrategy = FlatToleranceReplacementStrategy.builder().build();
+    public final FlatToleranceReplacementStrategy flatToleranceReplacementStrategy2 = FlatToleranceReplacementStrategy.builder().build();
+    public final ProgressiveIntoleranceReplacementStrategy progressiveIntoleranceReplacementStrategy = ProgressiveIntoleranceReplacementStrategy.builder().build();
     private final DecisionStrategy alwaysDecisionStrategy = AlwaysDecisionStrategy.builder().build();
     private final PatronSetupDetails alwaysStrategySetupDetails =
             PatronSetupDetails.builder()
-                .replacementStrategy(FlatToleranceReplacementStrategy.builder().build())
-                .decisionStrategy(alwaysDecisionStrategy)
+                .replacementStrategyName(flatToleranceReplacementStrategy.getName())
+                .decisionStrategyName(alwaysDecisionStrategy.getName())
                 .count(20)
                 .build();
     private final DecisionStrategy alwaysDecisionStrategy2 = AlwaysDecisionStrategy.builder().build();
     private final PatronSetupDetails alwaysStrategySetupDetails2 =
             PatronSetupDetails.builder()
-                .replacementStrategy(FlatToleranceReplacementStrategy.builder().build())
-                .decisionStrategy(alwaysDecisionStrategy2)
+                .replacementStrategyName(flatToleranceReplacementStrategy.getName())
+                .decisionStrategyName(alwaysDecisionStrategy2.getName())
                 .count(20)
                 .build();
     private final DecisionStrategy neverDecisionStrategy = NeverDecisionStrategy.builder().build();
     private final PatronSetupDetails neverStrategySetupDetails =
             PatronSetupDetails.builder()
-                .replacementStrategy(FlatToleranceReplacementStrategy.builder().build())
-                .decisionStrategy(neverDecisionStrategy)
+                .replacementStrategyName(flatToleranceReplacementStrategy2.getName())
+                .decisionStrategyName(neverDecisionStrategy.getName())
                 .count(50)
                 .build();
     private final DecisionStrategy lastCorrectDecisionStrategy = LastCorrectDecisionStrategy.builder().build();
     private final PatronSetupDetails lastCorrectStrategySetupDetails =
             PatronSetupDetails.builder()
-                .replacementStrategy(ProgressiveIntoleranceReplacementStrategy.builder().build())
-                .decisionStrategy(lastCorrectDecisionStrategy)
+                .replacementStrategyName(progressiveIntoleranceReplacementStrategy.getName())
+                .decisionStrategyName(lastCorrectDecisionStrategy.getName())
                 .count(60)
                 .build();
 
+    private final Set<DecisionStrategy> decisionStrategies = ImmutableSet.of(
+            alwaysDecisionStrategy,
+            alwaysDecisionStrategy2,
+            neverDecisionStrategy,
+            lastCorrectDecisionStrategy
+    );
+
+    private final Set<ReplacementStrategy> replacementStrategies = ImmutableSet.of(
+            flatToleranceReplacementStrategy,
+            flatToleranceReplacementStrategy2,
+            progressiveIntoleranceReplacementStrategy
+    );
+
     private final SimulationGenerator testSimulationGenerator = SimulationGenerator.builder()
-        .barCapacity(50)
-        .simulationLength(200)
-        .barPreviousHistory(List.of(10))
-        .patronSetupDetailsList(ImmutableList.of(
-            alwaysStrategySetupDetails,
-            alwaysStrategySetupDetails2,
-            neverStrategySetupDetails,
-            lastCorrectStrategySetupDetails
-        ))
+            .barCapacity(50)
+            .simulationLength(200)
+            .barPreviousHistory(List.of(10))
+            .patronSetupDetailsList(ImmutableList.of(
+                    alwaysStrategySetupDetails,
+                    alwaysStrategySetupDetails2,
+                    neverStrategySetupDetails,
+                    lastCorrectStrategySetupDetails
+            ))
+            .decisionStrategies(decisionStrategies)
+            .replacementStrategies(replacementStrategies)
         .build();
     @Test
     public void default_setsExpectedParameters() {
-        final SimulationGenerator simulationGenerator = SimulationGenerator.builder().build();
+        final SimulationGenerator simulationGenerator = SimulationGenerator.builder()
+                .decisionStrategies(decisionStrategies)
+                .replacementStrategies(replacementStrategies)
+                .build();
         final SimulationGenerator expectedsimulationGenerator = SimulationGenerator.builder()
-            .barCapacity(60)
-            .simulationLength(100)
-            .barPreviousHistory(List.of(0))
-            .patronSetupDetailsList(ImmutableList.of())
-            .build();
+                .barCapacity(60)
+                .simulationLength(100)
+                .barPreviousHistory(List.of(0))
+                .patronSetupDetailsList(ImmutableList.of())
+                .decisionStrategies(decisionStrategies)
+                .replacementStrategies(replacementStrategies)
+                .build();
 
         assertThat("Default Simulation Generator built as expected", simulationGenerator, samePropertyValuesAs(expectedsimulationGenerator));
     }
