@@ -6,6 +6,7 @@ import abm.elfarolbar.strategies.decision.DecisionStrategy;
 import abm.elfarolbar.strategies.replacement.ReplacementStrategy;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -19,16 +20,16 @@ public class Simulation {
     private final List<Integer> barPreviousHistory;
     private final int simulationLength;
     @NonNull
-    private List<AgentPropsAllocation> initialAgentPropsAllocations;
+    private List<PatronSetupDetails> initialPatronSetupDetails;
 
     @NonNull
     private final Bar bar;
     @NonNull
     private final List<Patron> patrons;
     @NonNull
-    private final List<DecisionStrategy> decisionStrategies;
+    private final Set<DecisionStrategy> decisionStrategies;
     @NonNull
-    private final List<ReplacementStrategy> replacementStrategies;
+    private final Set<ReplacementStrategy> replacementStrategies;
     @NonNull
     private final List<Map<String, Integer>> strategyDistributions;
 }

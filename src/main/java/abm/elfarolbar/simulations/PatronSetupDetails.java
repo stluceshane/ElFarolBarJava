@@ -8,7 +8,7 @@ import abm.elfarolbar.strategies.replacement.ReplacementStrategy;
 
 @Builder
 @Value
-public class AgentPropsAllocation {
+public class PatronSetupDetails {
     @NonNull
     DecisionStrategy decisionStrategy;
     @NonNull
