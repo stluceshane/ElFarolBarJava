@@ -23,6 +23,8 @@ dependencies {
     api("com.fasterxml.jackson.core:jackson-databind:2.15.3")
     api("org.apache.commons:commons-lang3:3.12.0")
     api("com.google.guava:guava:32.0.0-jre")
+    implementation("org.apache.logging.log4j:log4j-api:2.21.1")
+    implementation("org.apache.logging.log4j:log4j-core:2.21.1")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
     testImplementation("org.mockito:mockito-core:5.3.1")
     testImplementation("org.mockito:mockito-junit-jupiter:5.3.1")
@@ -53,7 +55,7 @@ tasks.named<Test>("test") {
 group = "org.example"
 version = "1.0-SNAPSHOT"
 description = "Main"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.sourceCompatibility = JavaVersion.VERSION_20
 
 publishing {
     publications.create<MavenPublication>("maven") {
