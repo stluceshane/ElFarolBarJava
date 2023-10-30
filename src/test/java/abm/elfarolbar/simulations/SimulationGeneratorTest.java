@@ -34,9 +34,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class SimulationGeneratorTest {
-    public final FlatToleranceReplacementStrategy flatToleranceReplacementStrategy = FlatToleranceReplacementStrategy.builder().build();
-    public final FlatToleranceReplacementStrategy flatToleranceReplacementStrategy2 = FlatToleranceReplacementStrategy.builder().build();
-    public final ProgressiveIntoleranceReplacementStrategy progressiveIntoleranceReplacementStrategy = ProgressiveIntoleranceReplacementStrategy.builder().build();
+    private final FlatToleranceReplacementStrategy flatToleranceReplacementStrategy = FlatToleranceReplacementStrategy.builder().build();
+    private final FlatToleranceReplacementStrategy flatToleranceReplacementStrategy2 = FlatToleranceReplacementStrategy.builder().build();
+    private final ProgressiveIntoleranceReplacementStrategy progressiveIntoleranceReplacementStrategy = ProgressiveIntoleranceReplacementStrategy.builder().build();
     private final DecisionStrategy alwaysDecisionStrategy = AlwaysDecisionStrategy.builder().build();
     private final PatronSetupDetails alwaysStrategySetupDetails =
             PatronSetupDetails.builder()
@@ -114,7 +114,6 @@ public class SimulationGeneratorTest {
         final Simulation simulation = testSimulationGenerator.generate("simulation id");
 
         assertThat("Simulation contains correct simulation id", simulation.getSimulationId(), is("simulation id"));
-        assertThat("Simulation contains correct bar capacity", simulation.getBarCapacity(), is(50));
         assertThat("Simulation contains correct bar previous history", simulation.getBarPreviousHistory(), is(ImmutableList.of(10)));
         assertThat("Simulation contains correct simulation length", simulation.getSimulationLength(), is(200));
 

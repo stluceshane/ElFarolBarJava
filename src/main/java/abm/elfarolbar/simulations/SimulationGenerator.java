@@ -51,7 +51,7 @@ public class SimulationGenerator {
                 .flatMap(Collection::parallelStream)
                 .map(patronSetupDetails -> Patron.builder()
                         .id(UUID.randomUUID().toString())
-                        .decisionStrategies(Map.copyOf(decisionStrategiesMap))
+                        .decisionStrategies(decisionStrategiesMap)
                         .decisionStrategyName(patronSetupDetails.getDecisionStrategyName())
                         .replacementStrategy(replacementStrategiesMap.get(patronSetupDetails.getReplacementStrategyName()))
                         .memoryProps(
@@ -70,7 +70,6 @@ public class SimulationGenerator {
 
         return Simulation.builder()
             .simulationId(simulationId)
-            .barCapacity(barCapacity)
             .barPreviousHistory(barPreviousHistory)
             .simulationLength(simulationLength)
             .initialPatronSetupDetails(patronSetupDetailsList)
