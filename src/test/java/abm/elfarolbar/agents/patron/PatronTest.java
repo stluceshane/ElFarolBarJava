@@ -171,8 +171,8 @@ public class PatronTest {
                         ImmutableMap.of(
                             "Active", true,
                             "Inactive", false,
-                            "Inactive 2", RandomUtils.nextBoolean(),
-                            "Inactive Randomized", RandomUtils.nextBoolean()
+                            "Inactive 2", idx == 1,
+                            "Inactive Randomized", idx == 2
                         )
                     )
                     .overcrowded(true)
@@ -201,7 +201,7 @@ public class PatronTest {
         patron.selectNewStrategy();
 
         assertThat("Last strategy switch step is updated", patron.getLastStrategySwitchStep(), is(10));
-        assertThat("Decision strategy is switched to correct strategy",  patron.getDecisionStrategyName(), is("Inactive"));
+        assertThat("Decision strategy is switched to correct strategy", patron.getDecisionStrategyName(), is("Inactive"));
     }
 
     @Test
